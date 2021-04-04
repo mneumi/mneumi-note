@@ -1,8 +1,6 @@
 ## Docker镜像原理
 
-### 思考
-
-答案在后面
+### 问题
 
 1. 镜像的本质是什么？
 2. Docker中Centos镜像为什么只有200MB，而要给Centos操作系统的iso文件却又几个G？
@@ -18,11 +16,11 @@ Linux文件系统由`bootfs`和`rootfs`两部分组成
 
 不同的发行版 `bootfs`基本一样，而`rootfs`不同
 
-### Docker镜像原理
+### UnionFS 联合文件系统
 
-Docker镜像是由特殊的文件系统叠加而来，这种技术称为统一文件系统
+Docker镜像实际是由一层一层的文件系统叠加而来，这种技术称为联合文件系统（UnionFS）
 
-统一文件系统技术能够将不同的层整合为一个文件系统，为这些层提供一个统一的是视角，这样就隐藏了多层的存在，从用户的角度看来，只存在一个文件系统
+联合文件系统技术能够将不同的层整合为一个文件系统，为这些层提供一个联合的是视角，这样就隐藏了多层的存在，从用户的角度看来，只存在一个文件系统
 
 一个镜像可以在另外一个镜像上面，位于下面的镜像称为父镜像，最底层的镜像称为基础镜像
 
@@ -52,7 +50,21 @@ Docker镜像是由特殊的文件系统叠加而来，这种技术称为统一�
 
 ## 镜像制作
 
-### 方式1：容器转为镜像
+### 获得镜像的途径
+
+| 途径                   | 说明                                     |
+| ---------------------- | ---------------------------------------- |
+| 从远程库下载           | 一般用于获取第三方官方镜像，最常用最实用 |
+| 容器转为镜像           | 一般用于创建自己的镜像，不常用           |
+| 通过dockerfile构建镜像 | 一般用于发布自己的镜像，常用             |
+
+### 从远程库下载
+
+一般通过 `docker pull` 命令从 `Docker Hub` 中下载
+
+### 容器转为镜像
+
+#### 概述
 
 这种方式数据卷不会保存
 
@@ -60,19 +72,31 @@ Docker镜像是由特殊的文件系统叠加而来，这种技术称为统一�
 | ------------------------------------ | ------------------------ |
 | docker commit 容器id 镜像名称:版本号 | 版本号省略时为 `lastest` |
 
+#### 示意图
+
 ![](./images/image-20200327235540458.png)
 
-### 方式2：使用Dockerfile构建镜像
+### 通过Dockerfile构建镜像
+
+见下文
 
 
 
 ## Dockerfile
 
-### 概念与作用
+### 概述
 
 Dockerfile是一个文件，包含了一条条的指令，用来制作Docker镜像
 
 每一条指令构建一层镜像，最终构建出一个新的镜像
+
+### 构建命令
+
+```shell
+docker build -t 镜像名 . # . 表示当前目录下存在 dockerfile 文件
+```
+
+### 关键字
 
 | 关键字      | 作用                     | 备注                                       |
 | ----------- | ------------------------ | ------------------------------------------ |
@@ -94,19 +118,124 @@ Dockerfile是一个文件，包含了一条条的指令，用来制作Docker镜�
 | STOPSIGNAL  | 发送信号量到宿主机       | 该指令设置将发送到容器的系统调用信号以退出 |
 | SHELL       | 指定执行脚本的shell      | 指运行CMD和RUN指令中的shell                |
 
-### 案例
+### CMD和ENTRYPOINT区别
 
-要求：
+| 关键字     | 区别                                               |
+| ---------- | -------------------------------------------------- |
+| CMD        | 指定这个容器启动时要执行的命令，只有最后一条会生效 |
+| ENTRYPOINT | 指定这个容器启动时要执行的命令，**可以追加命令**   |
 
-1. 默认登录路径为 `/usr`
-2. 自动安装 `vim`
 
-Dockerfile文件：
+
+## Dockerfile案例
+
+### 案例1
+
+功能：默认登录路径为 `/usr`，自动安装 `vim`
+
+Dockerfile文件
 
 ```dockerfile
 FROM centos:7
-MAINTAINER kuonz <kuonz@outlook.com>
+MAINTAINER mneumi<mneumi@email.com>
 RUN yum install -y vim
 WORKDIR /usr
 CMD /bin/bash
 ```
+
+构建镜像
+
+```shell
+docker build -t diycentos . # 注意最后有 . 这个符号
+```
+
+启动镜像
+
+```shell
+docker run -d --name mycentos
+```
+
+访问测试
+
+```shell
+docker exec -it mycentos /bin/bash
+```
+
+### 案例2
+
+功能：制作tomcat镜像
+
+Dockerfile文件
+
+```dockerfile
+FROM centos
+MAINTAINER mneumi<mneumi@email.com>
+
+COPY readme.txt /usr/local/readme.txt
+
+ADD jdk-8u11-linux-x64.tar.gz /usr/local/ # 会自动进行解压
+ADD apache-tomcat-9.0.22.tar.gz /usr/local/
+
+RUN yum -y install vim
+
+ENV MYPATH /usr/local
+WORKDIR $MYPATH
+
+ENV JAVA_HOME /usr/local/jdk1.8.0_11
+ENV CLASSPATH $JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+ENV CATALINA_HOME /usr/local/apache-tomcat-9.0.22
+ENV CATALINA_BASE /usr/local/apache-tomcat-9.0.22
+ENV PATH $PATH:$JAVA_HOME/bin:$CATALINA_HOME/lib:$CATALINA_HOME/bin
+
+EXPOSE 8080
+
+CMD /usr/local/apache-tomcat-9.0.22/bin/startup.sh && tail -F /usr/localapache-tomcat-9.0.22/bin/logs/catalina.out
+```
+
+构建镜像
+
+```shell
+docker build -t diytomcat . # 注意最后有 . 这个符号
+```
+
+启动镜像
+
+```shell
+docker run \
+-d -p 9090:8080 --name diytomcat \
+-v /home/mneumi/build/tomcat/test:/usr/local/apache-tomcat-9.0.22/webapps/test \
+-v /home/mneumi/build/tomcat/tomcatlog/:/usr/local/apache-tomcat-9.0.22/logs
+```
+
+访问测试
+
+```shell
+curl http://localhost:9090
+```
+
+
+
+## 发布镜像到Docker Hub
+
+官网：https://hub.docker.com
+
+注册帐号，确定帐号可以登录
+
+```shell
+docker login -u 用户名 -p 密码
+```
+
+使用命令 tag，添加版本号
+
+```shell
+docker tag f8559daf1fc2 kuangsheng/tomcat:1.0
+```
+
+在服务器上提交自己的镜像
+
+```shell
+docker push kuangsheng/diytomcat:1.0
+```
+
+提交时也是按照层级提交的
+

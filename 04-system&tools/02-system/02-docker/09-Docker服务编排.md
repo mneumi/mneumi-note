@@ -12,6 +12,6 @@
 
 Kubernetes：业界霸主，非常多的企业组织使用，功能强大，但也比较难以掌握
 
-Docker Swarm：Docker官方推出，于Docker集成，使用方便，但功能不多，所以使用的企业组织并不多
+Docker Swarm：Docker官方推出，于Docker集成，使用方便，但功能不多，所以使用的企业组织不多
 
-Docker Compose：一个编排多容器分布式部署的工具，使用的企业和组织也不多
+Docker Compose：一个编排多容器分布式部署的工具，使用的企业和组织不多
