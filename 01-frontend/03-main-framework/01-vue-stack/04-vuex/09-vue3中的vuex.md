@@ -66,3 +66,39 @@ setup() {
     store.dispatch("change", payload)
 }
 ```
+
+
+
+## 配合TypeScript
+
+### createStore支持泛型
+
+```typescript
+interface IUser {
+  isLogin: boolean;
+  name?: string;
+  id?: number;
+}
+
+export interface IGlobalData {
+  columns: IColumn[];
+  posts: IPost[];
+  user: IUser;
+}
+
+const store = createStore<IGlobalData>({
+  state: {
+    columns: [],
+    posts: [],
+    user: {
+      isLogin: false,
+    },
+  },
+});
+```
+
+### useStore支持泛型
+
+```js
+const store = useStore<GlobalData>();
+```

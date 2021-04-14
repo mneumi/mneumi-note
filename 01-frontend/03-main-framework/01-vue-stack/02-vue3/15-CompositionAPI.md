@@ -55,7 +55,7 @@ setup(props, { attrs, slots, emit })
 ```js
 setup(props, context) {
     return {
-        name: "dell"
+        name: "mneumi"
     }
 }
 ```
@@ -130,7 +130,7 @@ new Proxy({ value: "mneumi" });
 ### 使用示例
 
 ```js
-// proxy, "dell" 变为 proxy({value: "dell"}) 这样的响应式引用
+// proxy, "mneumi" 变为 proxy({value: "mneumi"}) 这样的响应式引用
 setup(props, context) {
     const { ref } = vue;
     
@@ -226,8 +226,8 @@ setup(props, context) {
 ### 原理
 
 ```js
-{ name: "mneumi", age: 23 }
-// 转为
+Proxy({ name: "mneumi", age: 23 })
+// 经过 toRefs 转为
 { name: new Proxy({ value: "mneumi" }), age: new Proxy({ value: 23 })}
 ```
 
@@ -244,11 +244,11 @@ setup(props, context) {
         obj.age = 24;
     }, 2000)
     
-    // toRefs proxy({name: "dell"}) ==> { name: proxy({value: "dell"})}
-    const { name } = toRefs(nameObj);
+    // toRefs proxy({name: "mneumi"}) ==> { name: proxy({value: "mneumi"})}
+    const nameObj = toRefs(obj);
     
     return {
-        nameObj
+        ...nameObj
     }
 }
 ```
@@ -266,7 +266,7 @@ setup(props, context) {
 ```js
 setup(props, context) {
     const { reactive, toRef } = Vue;
-    const data = reactive({name: "dell"});
+    const data = reactive({name: "mneumi"});
     const name = toRef(data, "name");
     const age = toRef(data, "age"); // 没有则创建
     setTimeout(() => {
@@ -308,6 +308,12 @@ const innerValue = isRef(foo) ? foo.value : foo;
 ### 参数
 
 可以传入函数或对象，分别对应`get函数`和`get/set函数`
+
+### 注意事项
+
+computed返回值是一个**被ref包裹**的响应式对象，使用时注意**.value**属性
+
+所以 computed 中返回的最好是基础值，而不是 Object，因为如果返回的是Object，那么**响应的是它的指向**，而不是它具体的值
 
 ### 使用示例
 
@@ -586,6 +592,27 @@ setup() {
 | errorCaptured                 | onErrorCaptured         |
 | renderTracked                 | onRenderTracked         |
 | renderTriggered               | onRenderTriggered       |
+
+### onErrorCaptured
+
+```js
+setup() {
+    const error = ref(null);
+
+    onErrorCaptured((e) => {
+        error.value = e;
+        return true; // 表示错误是否向上传播
+    });
+    
+    return { error };
+}
+```
+
+### renderTracked
+
+### renderTriggered
+
+
 
 
 

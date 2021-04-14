@@ -2,7 +2,7 @@
 
 系统性学习编程，积累完善知识体系
 
-推荐到 [我的个人博客网站](https://mneumi.cn) 获得更好的阅读体验
+推荐到 [我的个人博客网站](http://blog.mneumi.cn) 获得更好的阅读体验
 
 
 
@@ -12,7 +12,7 @@
 
 ## 关于作者
 
-个人主页：https://mneumi.cn
+个人主页：https://mneumi.cn（CDN加速：http://blog.mneumi.cn）
 
 Github：https://github.com/mneumi
 
