@@ -56,6 +56,7 @@ npm是node官方推出的包管理器，专门用于管理包
 | npm rebuild                            | 重新安装依赖                                         |
 | rm -rf node_modules && npm install     | 重新安装依赖                                         |
 | npm config get cache                   | 查看缓存地址                                         |
+| npm config get prefix                  | 查看npm安装路径                                      |
 
 
 

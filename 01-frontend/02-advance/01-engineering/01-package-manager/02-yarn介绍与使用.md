@@ -52,6 +52,6 @@ yarn config set registry https://registry.npm.taobao.org
 | yarn info 包名           | 查看包的详细信息                                             |
 | yarn init                | 初始化项目的package.json文件                                 |
 | yarn cache dir           | 查看缓存的目录                                               |
-| yarn global bin          | 查看bin全局安装路径                                          |
 | yarn global dir          | 查看dir全局安装路径                                          |
+| yarn global bin          | 查看bin全局安装路径                                          |
 | yarn create              | 运行时会自动安装或者更新需要的包，同时在它的名字前加上`create-`前缀 |

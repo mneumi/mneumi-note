@@ -48,7 +48,7 @@ const store = new Vuex.Store({
 store.getters.doneTodos
 ```
 
-### 方法式定义与访问
+### 函数式定义与访问
 
 可以通过让 getter 返回一个函数，来实现给 getter 传参
 
@@ -61,7 +61,7 @@ getters: {
 }
 ```
 
-访问
+访问示例
 
 ```js
 store.getters.getTodoById(2) // -> { id: 2, text: '...', done: false }

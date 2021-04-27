@@ -285,7 +285,7 @@ console.log(result); // [1,2,3,4,5,6]
 
 ### 字符串比较
 
-localeCompare(字符串)
+localeCompare(字符串)，**localeCompare可以对比中文**
 
 这个方法比较两个字符串，并返回下列值中的一个 
 

@@ -73,6 +73,18 @@ afterBtn.addEventListener('click', function() {
 
 > 排他思想：如果有一组元素，只要它们之中的一个有某种样式，其他没有，则需要先使用循环将它们的样式全部清除，再给特点元素添加
 
+获取元素高级样式（如伪元素选择器）的值的方法：使用`document.getComputedStyle`
+
+```js
+document.getComputedStyle(dom元素，样式值)
+```
+
+示例代码
+
+```js
+document.getComputedStyle(document.querySelect("div"), "::first-letter").color;
+```
+
 ### 操作元素的属性
 
 | 属性         | 说明     |

@@ -50,13 +50,47 @@ setup(props, { attrs, slots, emit })
 
 ### 注意事项
 
-在setup中无法使用`this`，因为setup函数执行时，组件实例还没有创建完全
+1. 在setup中无法使用`this`，因为setup函数执行时，组件实例还没有创建完全
 
 ```js
 setup(props, context) {
     return {
         name: "mneumi"
     }
+}
+```
+
+2. 不要手动执行`setup`函数
+
+   虽然可以通过`this.$option`来手动调用，但千万别这么做，因为`setup`只应该执行一次，且由 Vue.js 框架自动执行
+
+
+
+
+
+## props
+
+### 功能
+
+由于setup函数执行时，组件未创建完毕，无法使用`this`，所以需要使用参数`props`来获取传入组件的属性值
+
+### 注意事项
+
+可以将 `props` 参数看做一个响应式对象，所以不能直接解构
+
+方式1：直接使用 `props` 对象
+
+```js
+setup(props) {
+    console.log(props.inputValue);
+};
+```
+
+方式2：使用 toRefs 进行解构
+
+```js
+setup(props) {
+    const { inputValue } = toRefs(props);
 }
 ```
 
@@ -126,6 +160,8 @@ new Proxy({ value: "mneumi" });
 在模板中使用：自动解套，无需额外写`.value`
 
 当 ref 作为 reactive 对象的 property 被访问或修改时，也将自动解套 value 值，其行为类似普通属性
+
+使用 ref 获取 dom 节点时，最好在 `mounted` 生命周期中获取，因为`mounted`时才能保证 dom 已生成
 
 ### 使用示例
 
@@ -463,12 +499,26 @@ stop();
 
 ## watchEffect
 
+### 功能
+
+watchEffect 类似于 watch，区别在于不需要指定监听的值，而是自动分析依赖项（类似于computed）
+
+### 参数与返回值
+
+参数：一个无参数的回调函数
+
+返回值：一个用于停止监听的函数
+
 ### 特点
 
 * 立即执行，不惰性
 * 不需要传递要监听的内容，会自动检查依赖
 * 不需要很多参数，只需要一个回调函数
 * 只能获取当前值，不能获取之前值
+
+### 使用场景
+
+常用于进行网络请求获取数据
 
 ### 示例代码
 
@@ -484,7 +534,7 @@ setup() {
 
 
 
-## provide + inject
+## provide & inject
 
 ### 功能
 
@@ -530,30 +580,63 @@ setup() {
 
 获取dom节点对象或组件对象
 
+### 注意事项
+
+需要保证 dom-ref 变量名与ref属性值同名
+
 ### 示例代码
 
 ```js
 setup() {
     const { ref, onMounted } = vue;
-    const hello = ref(null);
+    const hello = ref(null); // dom-ref 变量名为 hello
     
     onMounted(() => {
         console.log(hello)
     })
     
-    return {
-        hello
-    }
+    return { hello }
 }
 
 ```
 
 ```html
 <div>
-    <div ref="hello">
+    <div ref="hello"> <!-- dom-ref与ref属性值同名 -->
         Hello World
     </div>
 </div>
+```
+
+### dom-ref 对循环使用
+
+原理：ref属性除了可以是普通值，也可以是回调函数，回调函数的参数就是节点对象本身，使用回调函数存储节点对象即可
+
+```html
+<template>
+  <div v-for="(item, index) in list" :ref="el => { if (el) divs[index] = el }">
+    {{ item }}
+  </div>
+</template>
+
+<script>
+  import { ref, reactive, onBeforeUpdate } from 'vue'
+
+  export default {
+    setup() {
+      const list = reactive([1, 2, 3])
+      const divs = ref([])
+
+      // 保证每次更新前，divs数组都被重置
+      // 这是因为循环的数组可能会改变，要清除旧值，重新获取
+      onBeforeUpdate(() => {
+        divs.value = []
+      })
+
+      return { list, divs }
+    }
+  }
+</script>
 ```
 
 

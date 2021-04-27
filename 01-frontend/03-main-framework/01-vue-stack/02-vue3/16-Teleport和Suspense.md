@@ -14,9 +14,9 @@
 
 ### 使用方法
 
-使用`<Teleport></Teleport>`组件包裹住需要渲染到其他`DOM`的模板
+使用`<Teleport></Teleport>`组件包裹住需要渲染到其他`DOM`的模板，然后通过`Teleport`的`to`属性，指定目标`DOM`即可
 
-然后通过`Teleport`的`to`属性，指定目标`DOM`即可
+作用域：Teleport内部的作用域和普通组件是，即使用时可以忽略Teleport
 
 ```vue
 <template>
