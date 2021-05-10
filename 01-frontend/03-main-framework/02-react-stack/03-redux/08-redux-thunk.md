@@ -53,6 +53,8 @@ componentDidMount() {
 
 因为Redux中间件可以增强`store`中的`dispatch`方法，从而实现能够在`dispatch`中进行异步操作的功能
 
+常用的中间件有：`redux-thunk`，`redux-promise`，`redux-saga`
+
 
 
 ## redux-thunk

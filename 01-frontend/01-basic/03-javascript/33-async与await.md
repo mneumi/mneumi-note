@@ -52,9 +52,9 @@ async function show() {
   try {
     let data = await expressionA;         
   }  catch (e) {
-    expressionB;
+    onError(e);
   } finally {
-    expressionC;
+  	onFially();
   }
 
   expression3;
@@ -65,7 +65,7 @@ async function show() {
 
 因为asyn函数返回Promise对象，所以可以直接catch
 
-缺点；错误处理和函数定义分离了
+缺点：错误处理和函数定义分离了
 
 ```js
 async foo() {}

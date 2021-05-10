@@ -159,13 +159,39 @@ useState内部是使用链表保存多个State的，这就要求保证组件中�
 * 不能在条件语句中使用useState，因为这会动态修改组件的useState的个数
 * 即有一条约定：在函数组件的最上面使用useState，且不要在条件语句中使用useState
 
+### useState闭包陷阱
+
+```tsx
+export const Test = () => {
+    const [num, setNum] = useState(0);
+    
+    const add = () => setNum(num + 1);
+    
+    useEffect(() => {
+        setInterval(() => {
+            console.log("num in setInterval: ", num);
+        }, 1000);
+    });
+    
+    return (
+    	<div onClick={add}>加1</div>
+    );
+}
+```
+
+现象：无论点击多少次**加1**，setInterval中打印的都是0
+
+解决方法：对useEffect添加依赖项，从而实 useEffect 重新执行
+
 
 
 ## useReducer
 
 ### 概述
 
-`useReducer`类似于`useState`，在某些场景下，如果state的处理逻辑比较复杂，我们可以通过useReducer来对其进行拆分
+`useReducer`类似于`useState`，在某些场景下，如果state的处理逻辑比较复杂，可以通过useReducer来对其进行拆分
+
+useReducer能够叫状态管理，但不能叫全局状态管理
 
 ### 使用
 
@@ -183,6 +209,10 @@ useState内部是使用链表保存多个State的，这就要求保证组件中�
 数据是不会共享的，它们只是使用了相同的counterReducer的函数而已
 
 useReducer只是useState的一种替代品，并不能替代Redux
+
+### 场景
+
+如果函数式组件中，几个state相互关联，互相影响，则推荐使用 useReducer
 
 ### 示例代码
 
@@ -223,7 +253,7 @@ export default function Counter() {
 
 所以出现了 `useEffect` 这个 Hook，用于实现类似生命周期的效果
 
-### 使用
+### 使用方式
 
 参数1：普通回调函数
 
@@ -267,6 +297,8 @@ export default function Counter() {
 
 ### 示例代码
 
+#### 基础使用
+
 ```jsx
 import React, { useState, useEffect } from 'react';
 
@@ -287,9 +319,9 @@ export default function ChangeTitle() {
 };
 ```
 
-### 模拟生命周期
+#### 模拟生命周期
 
-```tsx
+```jsx
 // 模拟 ComponentDidMounted
 useEffect(() => {
     // code here
@@ -299,6 +331,29 @@ useEffect(() => {
 useEffect(() => {
    // code here 
 });
+```
+
+#### 使用 async/await
+
+useEffect中不能直接使用 async 函数，即
+
+```tsx
+// 这种写法是错误的
+useEffect(async() => {
+    const response = await fetch("url");
+}, []);
+```
+
+但是可以在useEffect中定义 async 函数，即
+
+```jsx
+useEffect(() => {
+    const fetchData = async () => {
+        const response = await fetch("url");
+    };
+    
+    fetchData();
+}, []);
 ```
 
 
@@ -573,6 +628,10 @@ function ContextHookDemo() {
 
 1. 引入DOM（或者组件，但是需要是class组件）元素
 2. 保存一个数据，这个对象在整个生命周期中可以保存不变
+
+### 区别
+
+useRef和useState都可以在多次渲染中记录函数式组件的状态，区别在于 useState 会引起重新渲染，而 useRef 不会引起重新渲染
 
 ### 示例代码
 

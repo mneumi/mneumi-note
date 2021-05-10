@@ -23,12 +23,16 @@ JavaScript中比较常见的filter、map、reduce都是高阶函数
 
 HOC的核心理念就是**组合**
 
+### 命名规范
+
+高阶组件 （HOC）约定以`with`开头，如`withRoute`、`withTranslate`等
+
 ### 体会
 
 高阶组件的定义过程
 
 ```jsx
-function hoc(Component) { // 高阶组件是一个函数，参数为一个组件
+function withHOC(Component) { // 高阶组件是一个函数，参数为一个组件
     return class extends React.Component { // 高阶函数返回值为一个新组件
         render() {
             return <Component />
@@ -46,7 +50,7 @@ function Container(props) {
 }
 
 // 调用高阶函数，获取一个新组件 EnhancedCompnent
-const EnhancedComponent = hoc(Container);
+const EnhancedComponent = withHOC(Container);
 
 export default EnhancedComponent; // 导出新组件
 ```
@@ -142,7 +146,7 @@ const data2 = {
 
 ```jsx
 // 定义一个高阶函数
-function hoc(Component) {
+function withHOC(Component) {
     return class extends React.Component {
         constructor(props) {
 			super(props);
@@ -162,7 +166,7 @@ function Person(props) {
 }
 
 // 调用高阶函数，获取一个新组件 EnhancedPerson
-const EnhancedPerson = hoc(Person);
+const EnhancedPerson = withHOC(Person);
 
 // 使用 EnhancedPerson 组件
 <EnhancedPerson name="person" age={18} />
@@ -175,8 +179,9 @@ const EnhancedPerson = hoc(Person);
 
 高阶组件能够提供下列的帮助
 
-* 能够复用组件的逻辑（**组件**指高阶组件返回的组件）
-* 能够增强组件的功能（**组件**指传入给高阶组件的组件）
+* 抽取重复代码，能够复用组件的逻辑（**组件**指高阶组件返回的组件）
+* 渲染劫持，能够增强组件的功能（**组件**指传入给高阶组件的组件）
+* 捕获/劫持被处理组件的生命周期
 
 ### 优点
 
@@ -193,6 +198,8 @@ const EnhancedPerson = hoc(Person);
 
 
 
+
+
 ## 高阶组件示例
 
 ### props增强
@@ -200,7 +207,7 @@ const EnhancedPerson = hoc(Person);
 在不修改组件的原有代码时，向组件额外添加属性
 
 ```jsx
-function enhanceProps(Component, otherProps) {
+function withEnhanceProps(Component, otherProps) {
     return props => <Component {...props} {...otherProps} />
 }
 ```
@@ -213,7 +220,7 @@ function enhanceProps(Component, otherProps) {
 * 如果用户没有登录成功，那么直接跳转到登录页面
 
 ```jsx
-function loginAuth(Page) {
+function withLoginAuth(Page) {
     return props => {
         if (isLogin) {
             return <Page />
@@ -229,7 +236,7 @@ function loginAuth(Page) {
 可以利用高阶组件来劫持生命周期，在生命周期中完成特定的逻辑
 
 ```jsx
-function logRenderTime(Component) {
+function withLogRenderTime(Component) {
     return class extends PureComponent {
         UNSAFE_componentWillMount() {
             this.begin = Date.now();

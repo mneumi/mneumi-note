@@ -77,8 +77,6 @@ middleware(store)(next)(action)
 
 
 
-
-
 ## 中间件案例
 
 ### 案例1
@@ -139,5 +137,18 @@ export const actionLog: Middleware = (store) => (next) => (action) => {
 
 	console.log("stat 更新", store.getState());
 };
+```
+
+### 案例4
+
+```tsx
+import { Middleware } from "redux";
+
+export const actionLog: Middleware = (store) => (next) => (action) => {
+    console.log("state 当前: ", store.getState());
+   	console.log("fire action: ", action);
+    next(action);
+    console.log("state 更新: ", store.getState());
+}
 ```
 
