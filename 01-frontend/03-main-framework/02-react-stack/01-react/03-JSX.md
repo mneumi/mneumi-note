@@ -21,6 +21,8 @@ JSX转换后是一个函数调用(React.createElement)，本质是一个对象(R
 3. JSX中的标签可以是单标签，也可以是双标签
 
    如果是单标签，则必须闭合，即以`/>`结尾；
+   
+4. 
 
 示例
 
@@ -32,6 +34,12 @@ JSX转换后是一个函数调用(React.createElement)，本质是一个对象(R
   <img src="" />
 </div>)
 ```
+
+### 文件后缀名
+
+JSX并不是标准的 JavaScript 语法，但由于 JSX 太过流行，所以在 VS Code 中对 `.js` 文件也直接支持 `JSX` 语法
+
+但还是推荐：使用到 `JSX` 语法的文件用 `.jsx` 后缀名，而在纯 `JS` 语法的文件用  `.js` 后缀名
 
 ### 注释
 
@@ -69,12 +77,22 @@ JSX转换后是一个函数调用(React.createElement)，本质是一个对象(R
 
 ### 嵌入属性
 
-一样都是使用`{}`
+一样都是使用`{}`，属性使用驼峰式命名方式
 
 ```jsx
 return (
 	<div>
-    	<h2 title={this.state.title}>标题</h2>
+    	<h2 title={this.state.title} className="my-title">标题</h2>
+    </div>
+);
+```
+
+#### 自定义属性以`data-`开头
+
+```jsx
+tsxreturn (
+	<div>
+    	<h2 data-customized={"自定义属性"}>标题</h2>
     </div>
 );
 ```

@@ -1,4 +1,20 @@
-## 环境搭建
+## TypeScript的编译工具
+
+TypeScript 是编译型语言，实际运行时，需要先编译为 JavaScript 才可以运行，常用编译器有
+
+| 编译器                    | 说明                    |
+| ------------------------- | ----------------------- |
+| tsc                       | 微软官方的编译工具      |
+| ts-loader                 | webpack相关的编译工具   |
+| awesome-typescript-loader | webpack相关的编译工具   |
+| babel-loader              | babel官方提供的编译工具 |
+| esbuild                   | go语言编写的编译工具    |
+
+
+
+## ts-loader使用示例
+
+### 环境搭建
 
 ```shell
 npm init -y
@@ -12,11 +28,9 @@ yarn add @babel/core @babel/preset-env babel-loader core-js --dev
 yarn add webpack-dev-server --dev
 ```
 
+### 配置
 
-
-## 配置
-
-### webpack.config.js
+#### webpack.config.js
 
 ```js
 const path = require('path');
@@ -78,7 +92,7 @@ module.exports = {
 };
 ```
 
-### tsconfig.json
+#### tsconfig.json
 
 ```json
 {
@@ -90,7 +104,7 @@ module.exports = {
 }
 ```
 
-### index.ts
+#### index.ts
 
 ```typescript
 function sum(a: number, b: number): number {
@@ -100,7 +114,7 @@ function sum(a: number, b: number): number {
 console.log(sum(123, 456));
 ```
 
-### index.html
+#### index.html
 
 ```html
 <!DOCTYPE html>
@@ -116,7 +130,7 @@ console.log(sum(123, 456));
 </html>
 ```
 
-### package.json
+#### package.json
 
 ```json
 {

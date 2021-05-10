@@ -121,6 +121,10 @@ render() {
 
 `CSS Module` 需要配合 `webpack` 使用，`create-react-app`默认集成了`CSS Module`功能
 
+### 命名要求
+
+必须以 `.module.css` 结尾
+
 ### 优点与缺点
 
 | 优点                             | 缺点                                                         |
@@ -172,6 +176,25 @@ export default class Profile extends PureComponent {
             </>
         );
     }
+}
+```
+
+### VS Code 插件
+
+安装依赖
+
+```shell
+npm install typescript-plugin-css-modules --save-dev
+# OR
+yarn add typescript-plugin-css-modules -D
+```
+
+setting.json
+
+```json
+{
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": true
 }
 ```
 

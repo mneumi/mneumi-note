@@ -67,6 +67,24 @@ setup() {
 }
 ```
 
+### 使用心得
+
+在 Composition API 中，Vuex常常配合计算属性 computed 使用
+
+```js
+const useToken = () => {
+    const store = useStore();
+
+    const token = computed(() => {
+        return store.state.token;
+    });
+    
+    return { token };
+}
+```
+
+
+
 
 
 ## 配合TypeScript

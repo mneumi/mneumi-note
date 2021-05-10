@@ -26,6 +26,10 @@ Hooks 是 React 16.8 的新增特性，它可以在不编写class的情况下使
 
 Hook的出现，可以解决class组件的问题
 
+### Hooks含义
+
+Hooks意为**钩子**，React Hooks含义是将外部程序代码钩入，以为函数式组件提供额外的功能
+
 ### Hooks使用场景
 
 Hook基本可以代替之前所有使用class组件的地方，除了一些非常不常用的场景：比如无法模拟全部的生命周期
@@ -282,6 +286,22 @@ export default function ChangeTitle() {
     );
 };
 ```
+
+### 模拟生命周期
+
+```tsx
+// 模拟 ComponentDidMounted
+useEffect(() => {
+    // code here
+}, []);
+
+// 模拟 ComponentDidUpdated
+useEffect(() => {
+   // code here 
+});
+```
+
+
 
 
 

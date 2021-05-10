@@ -87,11 +87,14 @@ tsc demo.ts # 如果指定编译文件，则不会使用 tsconfig.json 配置
     "compileOptions": {               // 编译器的选项
         "target": "ES5",              // 指定编译的ES版本，默认转es3，选项：es3 es5 es6 es2015 es2016 ... es2020 esnext
         "module": "es2015",           // 模块化方案：'es2015' 'commonjs' 'umd' 'amd' 'system' 'none' 'es2015' 'es2020' 'esnext'
+        "moduleResolution": "node",   // 决定编译器的工作方式，支持"node"和"classic"模式
         "lib": [],                    // 指定生成的库用于什么环境
         "outDir": "./dist",           // 指定编译后生成文件存储的路径
         "outFile": "./dist/app.js",   // 将全局作用域中代码合并为一个文件，如果想要合并模块文件，则需要指定 module 为 system，一般用打包工具
             
         "allowJs": false,             // 是否对 .js 文件进行编译，默认false
+        "skipLibCheck": true,         // 忽略对库文件的检查
+        "esModuleInterop": true,      // 允许我们使用commonjs的方式import默认文件
         "checkJs": false,             // 是否检查 .js 文件的语法，默认false
         "removeComment": false,       // 是否移除注释，默认false
         "noEmit": false,              // 不生成编译文件，默认false，作用：只有ts检查语法，不用于生成编译文件
@@ -102,6 +105,8 @@ tsc demo.ts # 如果指定编译文件，则不会使用 tsconfig.json 配置
         "noImplicitAny": false,       // 不允许隐式any，默认false
         "noImplicitThis": false,      // 不允许不明确类型的this，默认false
         "strictNullChecks": false,    // 严格检查空值
+        "resolveJsonModule": true,    // 支持导入JSON文件
+        "jsx": "react"                // 允许编译器支持编译React代码
     }
 }
 ```
