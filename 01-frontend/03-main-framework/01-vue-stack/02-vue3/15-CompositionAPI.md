@@ -347,9 +347,23 @@ const innerValue = isRef(foo) ? foo.value : foo;
 
 ### 注意事项
 
-computed返回值是一个**被ref包裹**的响应式对象，使用时注意**.value**属性
+* computed返回值是一个**被ref包裹**的响应式对象，使用时注意**.value**属性
+* computed中依赖的东西必须是响应式的，而不能是普通的变量
 
-所以 computed 中返回的最好是基础值，而不是 Object，因为如果返回的是Object，那么**响应的是它的指向**，而不是它具体的值
+* computed 中返回的最好是基础值，而不是 Object，因为如果返回的是Object，那么**响应的是它的指向**，而不是它具体的值
+
+### 使用心得
+
+对于 computed 函数，如果参数是回调函数形式，则返回的响应式对象是只读的，不能对该响应式对象进行赋值操作，但是如果参数是对象形式，则返回的响应式对象是可读写的
+
+```js
+const val = computed({
+    get: () => props.modelValue || "",
+    set: val => {
+        context.emit("update:modelValue", val);
+    }
+})
+```
 
 ### 使用示例
 
@@ -798,3 +812,15 @@ export default useURLLoader;
     * 注意：没有onBeforeCreate和onCreated，因为写在setup就好了
     * onRenderTracked：收集依赖时执行（首次渲染也执行）
     * onRenderTriggered：重新渲染时才执行（首次渲染不执行）
+
+
+
+## 对响应式的理解
+
+响应式本质上就是**发布订阅模式**，响应式对象本质就是**发布者**
+
+* 使用 ref / reactive 创建的对象是**发布者**，它们的值一旦修改，就会进行发布
+* computed中作为参数的回调函数是**订阅者**，它订阅了回调函数中的**发布者（记作A）**，同时返回了一个新的**发布者（记作B）**，**订阅者**监听到内部**发布者（A）**的发布后，会通知外部**发布者（B）**进行发布
+* watch和watchEffect是一个**订阅者**，它监听到**发布者**的发布后，会进行相应的改变
+* 模板是**订阅者**，它会监听`setup`函数提供的**发布者**，当监听到**发布者**的发布后，会重新渲染视图
+

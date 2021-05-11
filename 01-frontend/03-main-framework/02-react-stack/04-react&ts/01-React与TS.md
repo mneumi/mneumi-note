@@ -27,17 +27,17 @@ yarn add typescript @types/node @types/react @types/react-dom @types/jest -D
 ### 示例代码
 
 ```tsx
-interface CardProps {
+interface Props {
     id: number;
     title: string;
     onClick: () => void;
 }
 
-interface CardState {
+interface State {
     show: boolean;
 }
 
-class Card extends React.Component<CardProps, CardState> {
+class Card extends React.Component<Props, State> {
     constructor(props) {
         super(props);
         this.state = {
@@ -57,17 +57,17 @@ class Card extends React.Component<CardProps, CardState> {
 ```
 
 ```tsx
-interface CardProps {
+interface Props {
     id: number;
     title: string;
     onClick: () => void;
 }
 
-interface CardState {
+interface State {
     show: boolean;
 }
 
-class Card extends React.PureComponent<CardProps, CardState> {
+class Card extends React.PureComponent<Props, State> {
     constructor(props) {
         super(props);
         this.state = {
@@ -189,7 +189,7 @@ export const List= ({ users, ...props}: ListProps) => {
 }
 ```
 
-使用
+使用示例
 
 ```tsx
 <List loading={isLoading} users={users} dataSource={list} />

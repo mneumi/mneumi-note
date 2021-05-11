@@ -170,6 +170,8 @@ const p = new Promise((resolve, reject) => {
 
 该Promise的状态是当全部Promise执行成功时，才成功，否则失败
 
+成功时，值是所有Promise结果组成的数组；失败时，值是失败的Promise的值
+
 ```js
 const p1 = Promise.resolve(1);
 const p2 = Promise.resolve(2);
@@ -204,9 +206,13 @@ Promise.all([p1, p2, p3]).then(value => {
 
 参数：一个Promise对象数组
 
-返回值：为一个Promise，且状态肯定是成功的，该Promise的value为一个数组，里面是每个Promise的执行结果状态和值
+返回值：为一个Promise，且状态肯定是成功的（fullfilled），该Promise的value为一个数组，里面是每个Promise的执行结果
 
-与 Promise.all区别：Promise.all的状态不一定成功，只有全部Promise成功，且当失败时，值为失败的值
+与 Promise.all区别
+
+* Promise.allSettled一定能拿到所有Promise的返回值，无论这些Promise是fullfilled还是rejected
+
+* Promise.all的状态不一定成功，只有全部Promise成功，它才成功，拿到全部Promise结果组成的数组；当有Promise失败时，值为失败的Promise的error，不会等待其他未执行完毕的Promise
 
 
 

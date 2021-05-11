@@ -31,7 +31,7 @@ componentDidMount() {
 
 ![](./images/image-20200805174512609.png)
 
-### 问题：Redux中不能进行异步操作
+### 问题：Redux中不推荐进行异步操作
 
 1. 放在 `action_creators.js` 中？
 
@@ -54,6 +54,10 @@ componentDidMount() {
 因为Redux中间件可以增强`store`中的`dispatch`方法，从而实现能够在`dispatch`中进行异步操作的功能
 
 常用的中间件有：`redux-thunk`，`redux-promise`，`redux-saga`
+
+### 注意：纯Redux中可以有异步操作
+
+虽然 Redux 本身不推荐含有异步操作，但是可以在异步操作的回调函数中进行 dispatch 派发操作，从而更新 Store，下文使用 redux-thunk 的好处在于能够将异步操作封装到 action 中，隐藏异步操作细节
 
 
 
@@ -132,15 +136,34 @@ function createThunkMiddleware(extraArgument) {
 }
 
 const thunk = createThunkMiddleware();
-
 thunk.withExtraArgument = createThunkMiddleware;
 
 export default thunk;
 ```
 
+### extraAgument
+
+使用redux-thunk时，可以调用 withExtraAgument 方法注册中间件，从而给所有的 thunk action 传入额外的参数
+
+```jsx
+const api = "http://www.example.com";
+const whatever = 42;
+
+const store = createStore(
+	reducer,
+    applyMiddleware(thunk.withExtraArgument({api, whatever}));
+);
+
+function fetchUser(id) {
+    return (dispatch, getState, {api, whatever}) => {
+        // code here, can use api and whatever
+    }
+}
+```
 
 
-## redux-thunk执行网络请求的示例代码
+
+## redux-thunk网络请求示例
 
 ### 1.定义action_type常量
 
@@ -214,7 +237,7 @@ function HomePage() {
     const dispatch = useDispatch();
     
     useEffect(() => {
-        dispatch(giveMeDataActionCreator())
+        dispatch(giveMeDataActionCreator());
     }, [dispatch]);
 }
 ```

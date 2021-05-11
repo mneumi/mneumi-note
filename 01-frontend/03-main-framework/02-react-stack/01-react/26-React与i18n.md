@@ -6,7 +6,7 @@ I18n指的是：网站国际化 `Internationalizatoin`
 
 ### 原理
 
-语言包作为静态资源文件单独保存：xml，json
+语言包作为静态资源文件单独保存，常用 `xml`，`json` 格式
 
 每种语言对应一个文件，切换语言设置时，语言文件也会随之切换
 
@@ -14,19 +14,19 @@ I18n指的是：网站国际化 `Internationalizatoin`
 
 ## React中的i18n工具
 
-* i18next：目前最主流的框架
+i18next：目前最主流的框架
 
-* react-i18next：i18next的React插件
+react-i18next：i18next的React插件
 
-* 文档：https://react.i18next.com
+文档：https://react.i18next.com
 
-* 安装依赖
+安装依赖
 
-  ```shell
-  npm install react-i18next i18next --save
-  # OR
-  yarn add react-i18next i18next
-  ```
+```shell
+npm install react-i18next i18next --save
+# OR
+yarn add react-i18next i18next
+```
 
 
 

@@ -20,6 +20,18 @@ import { createStore, applyMiddleware } from "redux";
 const store = createStore(reducer, {}, applyMiddleware(中间件1, 中间件2, ..., 中间件n));
 ```
 
+### 中间件顺序
+
+当注册多个中间件时，按照注册顺序，从左到右依次调用
+
+```ts
+import { createStore, applyMiddleware } from "redux";
+
+const store = createStore(reducer, {}, applyMiddleware(中间件1, 中间件2, ..., 中间件n));
+
+// 中间件调用顺序为：中间件1，中间件2，...，中间件n
+```
+
 ### 中间件结构
 
 | 参数与返回值 | 说明                   |
