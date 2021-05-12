@@ -50,7 +50,7 @@ class Home extends React.Component {
 
 ## 函数式组件中的网络请求
 
-```tsx
+```js
 import React, { useState, useEffect } from "react";
 
 const Home = (props) => {
@@ -81,7 +81,7 @@ const Home = (props) => {
 
 ## Redux中的网络请求
 
-```typescript
+```js
 import { createStore } from "redux";
 
 const FETCH_DATA_START = "FETCH_DATA_START";
@@ -121,7 +121,7 @@ const fetchDataActionCreator = () => {
   };
 }
 
-const initialState: initialStateType = {
+const initialState = {
     loading: false,
     error: null,
     data: null,
@@ -149,6 +149,103 @@ const store = createStore(reducer, applyMiddleware(thunk));
 
 
 ## RTK中的网络请求
+
+```js
+import {
+   	createSlice, 
+	createAsyncThunk, 
+    configureStore 
+} from "@reduxjs/redux-toolkit";
+
+const initialState = {
+    loading: true,
+    error: null,
+    items: []
+}
+
+export const getShoppingCart = createAsyncThunk(
+	"shoppingCart/getShoppingCart",
+    async (thunkAPI) => {
+        const { data } = await axios.get(`http://localhost/api/shoppingCart`);
+        return data.shoppingCartItems;
+    }
+);
+
+export const addShoppingCart = createAsyncThunk(
+	"shoppingCart/addShoppingCart",
+    async (parameters: { productId: string }, thunkAPI) => {
+        const { data } = await axios.post(
+        	`http://localhost/api/shoppingCart`,
+            {
+            	productId: parameters.productId 
+            }
+        );
+        return data.shoppingCartItems;
+    }
+);
+
+export const deleteShoppingCart = createAsyncThunk(
+	"shoppingCart/deleteShoppingCart",
+    async (parameters: { productId: string }, thunkAPI) => {
+        const { data } = await axios.delete(
+        	`http://localhost/api/shoppingCart/${parameters.productId}`
+        );
+        return data.shoppingCartItems;
+    }
+);
+
+export const shoppingCartSlice = createSlice({
+    name: "shoppingCart",
+    initialState,
+    reducers: {},
+    extraReducers: {
+        [getShoppingCart.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [getShoppingCart.fullfilled]: (state, action) => {
+            state.items = action.payload;
+            state.loading = false;
+        },
+        [getShoppingCart.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+        [addShoppingCart.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [addShoppingCart.fullfilled]: (state, action) => {
+            state.items = action.payload;
+            state.loading = false;
+        },
+        [addShoppingCart.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+        [deleteShoppingCart.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [deleteShoppingCart.fullfilled]: (state, action) => {
+            state.items = [];
+            state.loading = false;
+            state.error = null;
+        },
+        [deleteShoppingCart.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        }
+    }
+});
+
+const rootReducer = {
+    shoppingCart: shoppingCartSlice.reducer
+};
+
+const store = configureStore({
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) => [...getDefaultMiddleware(), actionLog], 
+    devTools: true
+});
+```
 
 
 

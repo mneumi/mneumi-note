@@ -148,6 +148,7 @@ import { actionLog } from "./middleware.ts";
 export const store = createStore(reducer, applyMiddleware(thunk));
 
 export type RootState = ReturnType<typeof store.getState>;
+export type DispatchType = typeof store.dispatch;
 ```
 
 ### 异步Action
