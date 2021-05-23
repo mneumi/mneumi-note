@@ -88,7 +88,7 @@ i18n
         resources,
         lng: "zh",
         interpolation: {
-            escapedValue: false // React已经默认防止XSS攻击
+            escapeValue: false // React已经默认防止XSS攻击
         }
     })
 ```
