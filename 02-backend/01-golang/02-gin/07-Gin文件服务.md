@@ -81,4 +81,7 @@ root：存放静态文件的文件夹路径
 
 ```go
 ctx.Static("/static", "./static")
+
+// 路径路径：/static/css/style.css
+// 文件路径：./static/css/style.css
 ```

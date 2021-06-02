@@ -1,4 +1,6 @@
-## 介绍
+## 初识Gin
+
+### 概述
 
 `Gin` 是一个 `Go` 的 `Web` 框架
 
@@ -10,9 +12,16 @@
 
 支持中间件：有非常良好的自定义性和扩展性
 
+### 链接
+
+| 功能   | 链接                             |
+| ------ | -------------------------------- |
+| 源码库 | https://github.com/gin-gonic/gin |
+| 文档   | https://gin-gonic.com            |
 
 
-## 下载
+
+## 下载与安装
 
 ### 使用`GOPATH`方式
 
@@ -35,27 +44,3 @@ import "github.com/gin-gonic/gin"
 ```shell
 $ go mod tidy
 ```
-
-
-
-## 入门
-
-`Gin` 框架版本的`Hello World`
-
-```go
-package main
-
-import "github.com/gin-gonic/gin" // 导入Gin框架
-
-func main() {
-  engine := gin.Default() // 创建Gin使用默认配置的引擎
-
-  engine.GET("/helloworld", func(ctx *gin.Context) { // 设置路由以及路由处理函数
-    ctx.String(200, "Hello World")
-  })
-
-  engine.Run(":8080") // 启动引擎（启动服务器）
-}
-```
-
-访问`127.0.0.1:8080/helloworld`即可看到浏览器显示`Hello World`

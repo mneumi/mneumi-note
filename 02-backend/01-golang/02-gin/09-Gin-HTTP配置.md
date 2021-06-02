@@ -20,3 +20,15 @@ func main() {
 }
 ```
 
+
+
+## Default和New区别
+
+都是返回一个路由器
+
+```go
+router := gin.Default()
+rrrrrr := gin.New()
+```
+
+区别：使用 Default，会默认开启两个中间件：logger，recovery
