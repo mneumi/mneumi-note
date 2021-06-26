@@ -157,5 +157,5 @@
 
 > 常见开源协议，图来自阮一峰先生的[博客](http://www.ruanyifeng.com/blog/2011/05/how_to_choose_free_software_licenses.html) 
 
-![](images/image-20201012020251718.png)
+![](./images/image-20201012020251718.png)
 

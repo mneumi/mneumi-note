@@ -35,13 +35,13 @@ sentinel是特殊的redis，不存储数据，支持的命令很有限，默认�
 
 启动redis-sentinel
 
-```bash
+```shell
 redis-sentinel redis-sentinel-26381.conf
 ```
 
 查看sentinel状态
 
-```bash
+```shell
 redis-cli -h 127.0.0.1 -p 26389 info sentinel
 ```
 
