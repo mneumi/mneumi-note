@@ -2,7 +2,11 @@
 
 ### 概述
 
-Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统，它可以用作数据库、缓存和消息中间件
+Redis 是一个开源（BSD许可）的，内存中的Key-Value存储系统，它可以用作数据库、缓存和消息中间件
+
+官方网站：https://redis.io
+
+中文网站：http://redis.cn
 
 ### 特点
 
@@ -47,7 +51,13 @@ docker run --name myredis -d -p 6379:6379 redis
 
 
 
-## Redis基础使用
+## Redis基础概念
+
+### Redis端口与数据库
+
+默认端口：**6379**，来自于Alessia  **Merz**
+
+数据库：默认16个数据库，类似数组下标从0开始，初始默认使用0号库
 
 ### Redis目录文件
 
@@ -62,13 +72,13 @@ docker run --name myredis -d -p 6379:6379 redis
 
 ### 启动与关闭Redis服务端
 
-| 操作         | 说明                                       |
-| ------------ | ------------------------------------------ |
-| 最简启动     | ${redis}/src/redis-server                  |
-| 配置文件启动 | ${redis}/src/redis-server config_file.conf |
-| 动态参数启动 | ${redis}/src/redis-server --port 6380      |
-| 检查是否启动 | ps -ef \| grep redis                       |
-| 关闭服务端   | ${redis}/src/redis-cli -p 6380 shutdown    |
+| 操作                 | 说明                                       |
+| -------------------- | ------------------------------------------ |
+| 最简启动（前台启动） | ${redis}/src/redis-server                  |
+| 配置文件启动         | ${redis}/src/redis-server config_file.conf |
+| 动态参数启动         | ${redis}/src/redis-server --port 6380      |
+| 检查是否启动         | ps -ef \| grep redis                       |
+| 关闭服务端           | ${redis}/src/redis-cli -p 6380 shutdown    |
 
 ### 启动与关闭Redis客户端
 
